@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RegionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,17 +16,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//-------------------------------------------------------------------------------------
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->get("/users",   [AuthController::class, 'users']);
 Route::middleware('auth:sanctum')->get("/refresh", [AuthController::class, 'refresh']);
-Route::middleware('auth:sanctum')->get("/user",    [AuthController::class, 'profile']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
+//--------------------------------------------------------------------------------------
+
+Route::middleware('auth:sanctum')->post("/add_region", [RegionController::class, 'addRegion']);
+Route::middleware('auth:sanctum')->post("/update_region", [RegionController::class, 'updateRegion']);
+Route::middleware('auth:sanctum')->post("/get_regions_info", [RegionController::class, 'getRegionsInfo']);
+Route::middleware('auth:sanctum')->post("/delete_region", [RegionController::class, 'deleteRegion']);
+Route::middleware('auth:sanctum')->post("/get_one_region", [RegionController::class, 'getOneRegion']);
+
+//--------------------------------------------------------------------------------------
 
 Route::get('/debug', [AuthController::class, 'outputConcole']);
 
-/* Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-}); */
+
