@@ -181,4 +181,71 @@ class RegionController extends Controller
             ]);
         }
     }
+
+    //==========================================================
+
+    public function getAllRegionsGeoJson(Request $request)
+    {
+        try {
+            $geo_jsons = DB::select('select geo_json from regions');
+
+            return response()->json([
+                'isError'=> false,
+                'message' => 'done',
+                'payload' => $geo_jsons 
+            ]);
+        }
+        catch (Exception $e) {            
+            return response()->json([
+                'isError'=> true,
+                'errorMessage' => $e->getMessage()
+            ]);
+        }
+    }
+
+    //==========================================================
+
+    public function importRegions(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [                               
+                'file' => 'required'
+            ]);
+     
+            if($validator->fails())
+            {
+                return response()->json([
+                    'isError'=> true,                
+                    'message'=>'uncompleted_data'
+                ]);
+            }
+    
+            //-------------------------------------------------
+
+            $data = [];
+
+            for ($i = 0; $i < count($request->file); $i++){
+                $data[] = [
+                           'uuid' => (string) Str::uuid(),
+                           'info' => $request->file[$i][0],
+                           'geo_json' => $request->file[$i][1]                      
+                          ];
+            }           
+
+            DB::table('regions')->insert($data);            
+
+            return response()->json([
+                'isError'=> false,
+                'message' => 'done'                
+            ]);
+            
+        }
+        catch (Exception $e) {            
+            return response()->json([
+                'isError'=> true,
+                'message' => $e->getMessage()
+            ]);
+        }        
+    }
+
 }

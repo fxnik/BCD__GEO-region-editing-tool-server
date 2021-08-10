@@ -155,12 +155,12 @@ class AuthController extends Controller
 
     //---------------------------------------------------
 
-    public function outputConcole()
+    /* public function outputConcole()
     {
         $out = new \Symfony\Component\Console\Output\ConsoleOutput();
         $uuid = (string) Str::uuid();
         $out->writeln("uuid= ". $uuid);
 
-        Database::createGpsDataTable($uuid);
-    }
+        //Database::createGpsDataTable($uuid);
+    } */
 }
